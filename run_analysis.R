@@ -76,15 +76,17 @@ activityLabels <- read.table(file.path(dataPath , "activity_labels.txt" ),header
 #$ V1: int  1 2 3 4 5 6
 #$ V2: Factor w/ 6 levels "LAYING","SITTING",..: 4 6 5 2 3 1
 
-# merge the data set with activities labels
+# merge activities data set with activities labels
 # it should match activity to 'v1'
-df <- merge(df,activityLabels, by.x='activity', by.y='V1')
+dataActivity <- merge(dataActivity, activityLabels, by.x='activity', by.y='V1')
+names(dataActivity) <- c("id", "activity")
 
+df$activity <- dataActivity$activity
 
 # 4- Appropriately labels the data set with descriptive variable names.
 # Using the labels we loaded from features.txt
 # please refer to features_info.txt for more info
-names(df)<- c('activity', as.character(featuresNamesubSet), 'subject', 'activity name') 
+names(df)<- c(as.character(featuresNamesubSet), 'subject', 'activity') 
 
 # 5- From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
 tidydata<-aggregate(. ~subject + activity, df, mean)
